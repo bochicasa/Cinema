@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Cine.View.ViewModel.Movie.Movie>
+@{
+    ViewData["Title"] = "Cinema";
+}
+
+<div id="texts-wrapper">
+    <div id="texts">
+        @{
+            if (ViewBag.Count == 0)
+            {
+                <div>
+                    <div>
+                        <h3>No hay eventos</h3>
+                        <p>En el momento no hay eventos disponibles para la venta.</p>
+                        Si tiene alg&uacute;na duda por favor contacte al administrador del cinema al xxxxxx.
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                var count = 1;
+                foreach (var item in ViewData.Model)
+                {
+                    <div>
+                        <div style="position:static;width:100%;margin-left:8px;">
+                            <div style="margin-bottom:20px;margin-top:30px;text-align:center"><h3>@item.original_title</h3></div>
+                            <div style="margin-bottom:10px"><b>Lenguaje: </b>@item.original_language</div>
+                            <div style="margin-bottom:10px"><b>Vision General: </b>@item.overview</div>
+
+                            @Html.ActionLink("Ver Detalle", "Index", "Reserva", new { id = item.id }, null)
+                            <br>
+                            @*<div style="position:static;width:100%;padding-left:50px">@Html.ActionLink("Ingresar","Index", "Venta")</div>
+                            *@
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+
+

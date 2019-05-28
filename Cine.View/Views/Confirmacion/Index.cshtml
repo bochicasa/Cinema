@@ -1,0 +1,45 @@
+﻿@model Cine.View.ViewModel.Movie.ConfirmacionDetalle
+
+@using (Html.BeginForm("Index", "Confirmacion", FormMethod.Post))
+{
+   
+    <div id="tabla">
+        <div class="tr">
+            <div class="td">
+                <img src="@Model.imagen" border="0" />
+            </div>
+
+            <div class="td" style="width:50px">
+                <br />
+            </div>
+            <div class="td">
+                <div>
+                    <h3>@Model.movie.original_title</h3>
+                </div>
+                <div>
+                    <b>Promedio de votos : </b> @Model.movie.vote_average.ToString() <br />
+                    <b>lenguaje : </b> @Model.movie.original_language<br />
+                </div>
+                <div>
+                    <b>Fecha de lanzamiento : </b> @Model.movie.release_date<br />
+                </div>
+                <div>
+                    <b>Resumen : </b> @Model.movie.overview<br />
+                </div>
+                <div>
+                    <b>Valor a pagar : </b> @Model.valorVenta<br />
+                </div>
+                <div id="tabla" style="width:80%">
+                    <div class="tr">
+                        @*<div id="btnVenta" class="td" style="padding:7px">@Html.ActionLink("Comprar", "Index", "Localidades", new { id = Model.espectaculo.Codigo, salaId = Model.sala.Codigo, tipo = "c" }, null)</div>*@
+                        @*<div id="btnReserva" class="td" style="padding:7px">@Html.ActionLink("Reservar", "Index", "Confirmacion", new { id = ViewBag.Funcion, movieId = Model.movie.id }, new { onclick = "validacion();" })</div>*@
+                        @*<input type="button" value="confirmar" id="confirmar" onclick="javascript: confirmar();" />*@
+
+                        <input type="submit" value="Submit Data" id="btnSubmit" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

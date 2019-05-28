@@ -1,0 +1,116 @@
+﻿@model Cine.View.ViewModel.Movie.ReservaDetalle
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+        $(document).ready(function () {
+            $("#ddlFunciones").change(function () {
+                debugger;
+
+                var url = "@Url.Action("RefreshPage", "Reserva")";
+                var value = document.getElementById("ddlFunciones").value;
+
+                var data = { id : value };
+                $.post(url, data).done(function (data) {
+                        debugger;
+                    if (data.ok == "true") {
+                        if (data.sillas > 0) {
+                            $("#lblSillas").html(data.mensaje);
+                            $("#numSillas").val(data.sillas);
+
+
+                        } else {
+                            $("#lblSillas").html("No hay sillas disponibles");
+                            $("#btnReserva").hide();
+                            $("#numSillas").html(0);
+                        }
+                        $("#mensaje").html(data.mensaje);
+                    }
+                    else {
+                        $("#mensaje").html(data.mensaje);
+                        $("#numSillas").html(0);
+                    }
+
+                })
+            })
+
+
+        });
+        function validacion() {
+            debugger;
+            var numeroSillas = document.getElementById("numSillas").value;
+
+
+            var e = document.getElementById("ddlNumeroSillas");
+            var seillasSeleccionadas = e.options[e.selectedIndex].value;
+
+            if (seillasSeleccionadas > numeroSillas) {
+                alert("No contamos con esa disponibilidad de sillas");
+
+                return false;
+            }
+            else
+                return true;
+
+        }
+
+        @*function confirmar() {
+            debugger;
+            $.post('@Url.Action("Index","Confirmar")', { id: '@Model.selectedFuncion' },
+                function (data) {
+                    alert();
+                }
+            )
+        }*@
+</script>
+<div>
+    <span id="mensaje"></span>
+</div>
+@using (Html.BeginForm("Index", "Confirmacion", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.movie.id)
+    @Html.HiddenFor(model => model.movie.vote_average)
+    <div id="tabla">
+        <div class="tr">
+            <div class="td">
+                <img src="@ViewBag.Image" border="0" />
+            </div>
+
+            <div class="td" style="width:50px">
+                <br />
+            </div>
+            <div class="td">
+                <div>
+                    <h3>@Model.movie.original_title</h3>
+                </div>
+                <div>
+                    <b>Promedio de votos : </b> @Model.movie.vote_average.ToString() <br />
+                    <b>lenguaje : </b> @Model.movie.original_language<br />
+                </div>
+                <div>
+                    <b>Fecha de lanzamiento : </b> @Model.movie.release_date<br />
+                </div>
+                <div>
+                    <b>Resumen : </b> @Model.movie.overview<br />
+                </div>
+                <div>
+                    @*<b>FUNCIONES : </b>@Html.DropDownListFor(m => m.selectedFuncion, Model.FuncionesSelected, "Seleccione una funcion", new { @id = "ddlFunciones" })*@
+                    @Html.DropDownListFor(model => model.selectedFuncion.Id, new SelectList(Model.funciones, "Id", "FechaFun"), "- Selecione una fecha de funcion -", new { @id = "ddlFunciones"})
+                </div>
+                <div class="td">
+                    <b>Sillas disponibles : </b><span id="lblSillas"></span><br />
+                    <b>Numero sillas : </b>@Html.DropDownListFor(model => model.numeroSillasSelected, (IEnumerable<SelectListItem>)ViewBag.NumSillas, "Seleccione")
+                    <input type="hidden" id="numSillas" />
+                </div>
+                <div id="tabla" style="width:80%">
+                    <div class="tr">
+                        @*<div id="btnVenta" class="td" style="padding:7px">@Html.ActionLink("Comprar", "Index", "Localidades", new { id = Model.espectaculo.Codigo, salaId = Model.sala.Codigo, tipo = "c" }, null)</div>*@
+                        @*<div id="btnReserva" class="td" style="padding:7px">@Html.ActionLink("Reservar", "Index", "Confirmacion", new { id = ViewBag.Funcion, movieId = Model.movie.id }, new { onclick = "validacion();" })</div>*@
+                        @*<input type="button" value="confirmar" id="confirmar" onclick="javascript: confirmar();" />*@
+
+                        <input type="submit" name="answer" value="Reservar" id="btnSubmit" />
+                        <input type="submit" name="answer" value="Cancelar" id="btnSubmit" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
